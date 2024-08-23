@@ -1,5 +1,5 @@
 import styled from "styled-components/native";
-import theme from "@/app/theme";
+import theme from "@/theme";
 
 interface TextProps {
     font?: string;
