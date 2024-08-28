@@ -101,7 +101,7 @@ const HomeContent = () => {
 
 export default function Home() {
     return (
-        // <HomeEmptyContent/>
-        <HomeContent/>
+        <HomeEmptyContent/>
+        // <HomeContent/>
     );
 }
