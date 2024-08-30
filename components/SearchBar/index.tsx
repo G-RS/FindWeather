@@ -1,11 +1,14 @@
-import { View, StyleSheet, TextInput, TouchableHighlight, Platform } from "react-native";
+import { View, StyleSheet, TextInput, TouchableHighlight, Platform, TextInputEndEditingEventData, NativeSyntheticEvent, GestureResponderEvent } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import theme from "@/theme";
 
 interface SearchBarProps {
-    value: string
-    onChangeText: React.Dispatch<React.SetStateAction<string>>
+    value?: string;
+    placeholder?: string;
+    onChangeText?: ((text: string) => void);
+    onEndEditing?: ((e: NativeSyntheticEvent<TextInputEndEditingEventData>) => void);
+    onPress?: ((event: GestureResponderEvent) => void);
 }
 
 export default function SearchBar(props: SearchBarProps) {
@@ -16,15 +19,17 @@ export default function SearchBar(props: SearchBarProps) {
                 <Octicons name="search" size={28} color={theme.colors.white}/>
 
                 <TextInput style={[styles.textInput, Platform.OS === 'web' && ({outlineStyle: 'none'} as any)]} 
-                        placeholder="Digite o nome de uma cidade"
+                        placeholder={props.placeholder}
                         placeholderTextColor={theme.colors.gray200}
+                        value={props.value}
                         inputMode="search"
                         keyboardAppearance="dark"
                         enterKeyHint="search"
-                        onChangeText={props.onChangeText}/>
+                        onChangeText={props.onChangeText}
+                        onEndEditing={props.onEndEditing}/>
             </View>
             
-            <TouchableHighlight style={{borderRadius:11}} onPress={() => alert(props.value)}>
+            <TouchableHighlight style={{borderRadius:11}} onPress={props.onPress}>
                 <View style={styles.button}>
                     <Ionicons name="location-sharp" size={28} color={theme.colors.white}/>
                 </View>

@@ -1,10 +1,12 @@
-import { View, Image } from "react-native";
+import { View, Image, ActivityIndicator } from "react-native";
 import { useState } from "react";
+import { weatherAPI } from "@/services/weather-api";
 import SearchBar from "@/components/SearchBar";
 import SearchCard from "@/components/Card-Search";
 import Text from "@/components/Text";
 import theme from "@/theme";
 import styles from "./styles";
+import { WeatherAPI } from "@/utils/weather-api.interface";
 
 
 const SearchError = () => {
@@ -27,17 +29,46 @@ const SearchError = () => {
 
 
 export default function Search() {
-    const [value, onChangeText] = useState('');
+    const [textValue, onChangeText] = useState('');
+    const [forecast, setForecast] = useState({} as WeatherAPI);
+    const [isError, setIsError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleAPICall = async () => {
+        setIsError(false);
+        setIsLoading(true);
+        console.log(forecast)
+
+        weatherAPI.getForecast(textValue)
+            .then((response) => { 
+                setForecast(response.data);
+            })
+            .catch((error) => { 
+                setIsError(true);
+                console.log(error);
+            })
+            .finally(() => { 
+                onChangeText(''); 
+                setIsLoading(false); 
+            })
+    };
 
     return(
         <View style={styles.container}>
-            <SearchBar value={value} onChangeText={onChangeText}/>
+            <SearchBar value={textValue} 
+                       placeholder="Digite o nome de uma cidade"
+                       onChangeText={onChangeText} 
+                       onEndEditing={handleAPICall}
+                       onPress={handleAPICall} />
 
             <View style={styles.searchCardContainer}>
-                {/* <SearchCard/> */}
+                { !isError && (forecast.current != null) ? <SearchCard forecast={forecast} /> : ''}
             </View>
 
-            {/* <SearchError/> */}
+            { isLoading ? <ActivityIndicator size='large' color='white' /> : '' }
+
+            { isError ? <SearchError/> : '' }
+    
         </View>
     );
 } 

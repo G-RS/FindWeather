@@ -1,26 +1,35 @@
 import { StyleSheet, View, Image } from "react-native";
+import { WeatherAPI } from "@/utils/weather-api.interface";
 import Temperature from "../Temperature";
 import Text from "../Text";
 import theme from "@/theme";
 
+interface SearchCardProps {
+    forecast: WeatherAPI
+}
 
-export default function SearchCard() {
+
+export default function SearchCard(props: SearchCardProps) {
 
     return(
         <View style={styles.container}>
 
             <View style={styles.climateContainer}>
                 <View style={styles.imageContainer}>
-                    <Temperature value="13" fontSize1={theme.fontSize.lg30} fontSize2={theme.fontSize.sm18}/>
+                    <Temperature value={`${props.forecast.current.temp_c.toFixed(0)}`.replace('.',',')} 
+                                 fontSize1={theme.fontSize.lg30} 
+                                 fontSize2={theme.fontSize.sm18}
+                    />
                     <Image style={styles.image} source={require('@/assets/images/weather-icons/cloud.png')}/>
                 </View>
 
-                <Text fontSize={theme.fontSize.sm18}>Nublado</Text>
+                <Text fontSize={theme.fontSize.sm18}
+                      textAlign="left">{props.forecast.current.condition.text}</Text>
             </View>
 
             <Text fontSize={theme.fontSize.sm18}
                   textAlign="left"
-                  color={theme.colors.white}>Santiago de Compostele, Espanha
+                  color={theme.colors.white}>{`${props.forecast.location.name}, ${props.forecast.location.region}`}
             </Text>
 
         </View>
