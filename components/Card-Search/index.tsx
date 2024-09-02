@@ -1,22 +1,18 @@
 import { StyleSheet, View, Image } from "react-native";
-import { WeatherAPI } from "@/utils/weather-api.interface";
+import { WeatherAPI, WeatherAPIProps } from "@/utils/weather-api.interface";
 import Temperature from "../Temperature";
 import Text from "../Text";
 import theme from "@/theme";
 
-interface SearchCardProps {
-    forecast: WeatherAPI
-}
 
-
-export default function SearchCard(props: SearchCardProps) {
+export default function SearchCard(props: WeatherAPIProps) {
 
     return(
         <View style={styles.container}>
 
             <View style={styles.climateContainer}>
                 <View style={styles.imageContainer}>
-                    <Temperature value={`${props.forecast.current.temp_c.toFixed(0)}`.replace('.',',')} 
+                    <Temperature value={`${props.forecast.current.temp_c.toFixed(0)}`} 
                                  fontSize1={theme.fontSize.lg30} 
                                  fontSize2={theme.fontSize.sm18}
                     />

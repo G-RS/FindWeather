@@ -36,6 +36,12 @@ const Item = (props: ItemProps) => {
     );
 }
 
+interface WeatherCardProps {
+    humidity: number;
+    wind_kph: number;
+    rain_change: number;
+}
+
 const Divider = () => {
     return (
         <View style={{
@@ -46,7 +52,7 @@ const Divider = () => {
     );
 }
 
-export default function WeatherCard() {
+export default function WeatherCard(props: WeatherCardProps) {
     return (
         <View style={{
             flexDirection: "row",
@@ -60,21 +66,21 @@ export default function WeatherCard() {
             marginTop: 45
         }}>
             <Item image={require("@/assets/images/weather-icons/drop-water.png")}
-                  middleText="24%"
+                  middleText={`${props.humidity}%`}
                   bottomText="Umidade"
             />
 
             <Divider/>
 
             <Item image={require("@/assets/images/weather-icons/wind.png")}
-                  middleText="20km/h"
+                  middleText={`${props.wind_kph}km/h`.replace('.', ',')}
                   bottomText="Veloc. Vento"
             />
 
             <Divider/>
 
             <Item image={require("@/assets/images/weather-icons/raining-middle.png")}
-                  middleText="76%"
+                  middleText={`${props.rain_change}%`}
                   bottomText="Chuva"
             />
 

@@ -3,9 +3,9 @@ import { View, Image, ImageSourcePropType } from "react-native";
 import Text from "../Text";
 
 interface HourCardProps {
-    temperature: string,
-    image: ImageSourcePropType,
-    hour: string
+    temperature: string | number;
+    image: string; //ImageSourcePropType;
+    hour: string;
 }
 
 export default function HourCard(props: HourCardProps) {
@@ -19,6 +19,7 @@ export default function HourCard(props: HourCardProps) {
             borderWidth: 1.5,
             padding: 5,
             height: 90,
+            marginRight: 18,
             width: 68
         }}>
 
@@ -33,7 +34,7 @@ export default function HourCard(props: HourCardProps) {
                 <Text fontSize={theme.fontSize.xxxs12}>º</Text>
             </View>
 
-            <Image style={{width:30, height: 30, marginBottom: 5}} source={props.image}/>
+            <Image style={{width:30, height: 30, marginBottom: 5}} source={{uri: `https:${props.image}`}}/>
 
             <Text font={theme.fontFamily.OverpassBold} 
                   fontSize={theme.fontSize.xxxs12}>{props.hour}

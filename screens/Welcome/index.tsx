@@ -4,6 +4,8 @@ import Button from "@/components/Button";
 import theme from "@/theme";
 import styles from "./styles";
 import { router } from "expo-router";
+import { storeData } from "@/storage/async-storage";
+import { StorageKeys } from "@/utils/storage.interface";
 
 
 export default function Welcome() {
@@ -19,7 +21,11 @@ export default function Welcome() {
         <Text font={theme.fontFamily.OverpassBold}>Weather</Text> nunca ficou tão fácil ter a previsão do tempo na palma da sua mão
       </Text>
         
-      <Button style={styles.button} onPress={() => {router.replace('/Home')}}><Text color={theme.colors.white}>Iniciar</Text></Button>
+      <Button style={styles.button} onPress={() => {
+        storeData(StorageKeys.FirstAccess, "true");
+        router.replace('/(tabs)');
+        }}><Text color={theme.colors.white}>Iniciar</Text>
+      </Button>
 
     </View>  
   );

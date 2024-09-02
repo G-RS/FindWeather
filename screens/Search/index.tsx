@@ -7,6 +7,8 @@ import Text from "@/components/Text";
 import theme from "@/theme";
 import styles from "./styles";
 import { WeatherAPI } from "@/utils/weather-api.interface";
+import { storeData, storeTestData } from "@/storage/async-storage";
+import { StorageKeys } from "@/utils/storage.interface";
 
 
 const SearchError = () => {
@@ -42,6 +44,8 @@ export default function Search() {
         weatherAPI.getForecast(textValue)
             .then((response) => { 
                 setForecast(response.data);
+                storeData(StorageKeys.CityName, textValue);
+                // storeTestData(response.data);
             })
             .catch((error) => { 
                 setIsError(true);

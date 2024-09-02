@@ -106,7 +106,7 @@ export interface Hour {
     last_updated_epoch?: number;
     last_updated?:       string;
     time_epoch?:         number;
-    time?:               string;
+    time :               string;
     temp_c:              number;
     temp_f:              number;
     condition:           Condition;
@@ -134,7 +134,7 @@ export interface Hour {
     is_day:              number;
     vis_km:              number;
     vis_miles:           number;
-    chance_of_rain?:     number;
+    chance_of_rain:      number;
     chance_of_snow?:     number;
     gust_mph:            number;
     gust_kph:            number;
@@ -145,3 +145,7 @@ export interface Hour {
 }
 
 export interface Alert { }
+
+export interface WeatherAPIProps {
+    forecast: WeatherAPI
+}

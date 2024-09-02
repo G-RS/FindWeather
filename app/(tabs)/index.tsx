@@ -10,9 +10,7 @@ export default function TabHome() {
         Overpass_700Bold
       });
     
-      if (!fontsLoaded) {
-        return;
-      }
+      if (!fontsLoaded) { return }
 
     return(
         <Home/>
