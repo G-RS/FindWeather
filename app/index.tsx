@@ -7,6 +7,8 @@ import { StatusBar } from "expo-status-bar";
 import * as SystemUI from 'expo-system-ui';
 import Welcome from '@/screens/Welcome';
 import theme from "@/theme";
+import { title } from 'process';
+import { Platform } from 'react-native';
 
 
 export default function Index() {
@@ -16,7 +18,11 @@ export default function Index() {
   useEffect(() => {
     SystemUI.setBackgroundColorAsync(theme.colors.dark);
     navigation.setOptions({ headerShown: false });
-
+    
+    if (Platform.OS == 'web') {
+      document.title = 'FindWeather';
+    }
+    
     getData(StorageKeys.FirstAccess)
       .then( (data) => {setFirstAccess(data as string); console.log(data)} );
   }, [navigation]);
