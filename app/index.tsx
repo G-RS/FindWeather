@@ -1,13 +1,12 @@
-import {useFonts, Overpass_400Regular, Overpass_600SemiBold, Overpass_700Bold} from '@expo-google-fonts/overpass';
-import { StatusBar } from "expo-status-bar";
-import * as SystemUI from 'expo-system-ui'
-import theme from "@/theme";
-import Welcome from '@/screens/Welcome';
 import { useEffect, useState } from 'react';
-import { router, useNavigation } from 'expo-router';
-import { getAllKeys, getData } from '@/storage/async-storage';
+import { Redirect, useNavigation } from 'expo-router';
+import { useFonts, Overpass_400Regular, Overpass_600SemiBold, Overpass_700Bold } from '@expo-google-fonts/overpass';
 import { StorageKeys } from '@/utils/storage.interface';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getData } from '@/storage/async-storage';
+import { StatusBar } from "expo-status-bar";
+import * as SystemUI from 'expo-system-ui';
+import Welcome from '@/screens/Welcome';
+import theme from "@/theme";
 
 
 export default function Index() {
@@ -34,9 +33,7 @@ export default function Index() {
     <>
       <StatusBar style="light"/>
 
-      { isFirstAccess != "true" ? <Welcome /> : router.replace('/(tabs)') } 
-
-      {/* {console.log(isFirstAccess)} */}
+      { isFirstAccess != "true" ? <Welcome /> : <Redirect href="/(tabs)"/> } 
     </>
   );
 }

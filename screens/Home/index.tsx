@@ -1,11 +1,12 @@
 import { View, Image, Platform, FlatList, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
-import { router } from "expo-router";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { StorageKeys } from "@/utils/storage.interface";
 import { WeatherAPI } from "@/utils/weather-api.interface";
 import { weatherAPI } from "@/services/weather-api";
-import { getData } from "@/storage/async-storage";
+import { weatherIcons } from "@/utils/weather-icons";
+import { getData, getTestData } from "@/storage/async-storage";
 import { DateFormat, TimeFormat } from "@/utils/dateFormat";
 import Text from "@/components/Text";
 import Temperature from "@/components/Temperature";
@@ -44,13 +45,25 @@ const HomeEmptyContent = () => {
 const HomeContent = ( props: HomeProps ) => {
     const [forecast, setForecast] = useState({} as WeatherAPI);
     const [isLoading, setIsLoading] = useState(true);
-    const icon = require('@/assets/images/weather-icons/heavy-raining-middle.png')
+    const [address, setAddress] = useState("");
+    const params = useLocalSearchParams<{ address: string}>();
+
+    // useEffect(() => {
+    //     weatherAPI.getForecast(city as string)
+    //     .then( (response) => {
+    //         setForecast(response.data);
+    //         setIsLoading(false);
+    //     });
+    // }, []);
 
     useEffect(() => {
-        weatherAPI.getForecast(props.cityName as string)
-        .then( (response) => {
-            setForecast(response.data);
+        getTestData(StorageKeys.Test)
+        .then((data) => {
+            setForecast(data);
             setIsLoading(false);
+            setAddress(`${data.location.name}, ${data.location.country}`)
+            console.log(`W.A.: ${data.location.name as WeatherAPI}`)        
+            console.log(`Name: ${props.cityName}`)
         });
     }, []);
 
@@ -65,9 +78,11 @@ const HomeContent = ( props: HomeProps ) => {
                         <Ionicons name="location-sharp" size={15} color={theme.colors.white}/>{`${forecast.location.name}, ${forecast.location.region}`}
                     </Text>
 
-                    <Text fontSize={theme.fontSize.xs16}>{DateFormat(forecast.location.localtime)}</Text>
+                    <Text fontSize={theme.fontSize.xs16}>{ DateFormat(forecast.location.localtime) }</Text>
 
-                    <Image style={styles.icon} source={icon} />
+                    <Image style={styles.icon} 
+                           source={ weatherIcons[`${forecast.current.condition.code as keyof typeof weatherIcons}`] } 
+                    />
 
                     <Temperature value={`${forecast.current.temp_c.toFixed(0)}`} 
                                  fontSize1={theme.fontSize.giant76} 
@@ -88,7 +103,10 @@ const HomeContent = ( props: HomeProps ) => {
 
                         <View style={styles.linkContainer}>
                             <Text fontSize={theme.fontSize.xs16}
-                                font={theme.fontFamily.OverpassSemiBold}>Próximos 5 dias
+                                  font={theme.fontFamily.OverpassSemiBold}>
+                                    <Link href={{ pathname: "/next-days", 
+                                                  params: { address: address }}} >Próximos 5 dias
+                                    </Link>
                             </Text>
                             <Ionicons name="chevron-forward-sharp" size={15} color={theme.colors.gray100}/>
                         </View>
@@ -118,6 +136,7 @@ export default function Home() {
         getData(StorageKeys.CityName)
         .then((city) => {
             setCity(city as string);
+            console.log(`City: ${city} - ${Platform.OS}`)
         });
     }, []);
 

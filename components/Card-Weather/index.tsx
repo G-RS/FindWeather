@@ -73,7 +73,7 @@ export default function WeatherCard(props: WeatherCardProps) {
             <Divider/>
 
             <Item image={require("@/assets/images/weather-icons/wind.png")}
-                  middleText={`${props.wind_kph}km/h`.replace('.', ',')}
+                  middleText={`${props.wind_kph.toFixed(0)}km/h`.replace('.', ',')}
                   bottomText="Veloc. Vento"
             />
 

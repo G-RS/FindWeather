@@ -28,17 +28,17 @@ export const getAllKeys = async () => {
 
 
 
-export const storeTestData = async (value: {}) => {
+export const storeTestData = async (key: StorageKeys, value: {}) => {
     try {
-        await AsyncStorage.setItem(StorageKeys.Test, JSON.stringify(value));
+        await AsyncStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
         console.log(`Saving Test Data Error: ${error}`);
     }
 };
 
-export const getTestData = async () => {
+export const getTestData = async (key: StorageKeys,) => {
     try {
-        const value = await AsyncStorage.getItem(StorageKeys.Test);
+        const value = await AsyncStorage.getItem(key);
         return value !== null ? JSON.parse(value) : {};
     } catch (error) {
         console.log(`Reading error: ${error}`);

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiKey = process.env.EXPO_PUBLIC_API_KEY;
+const apiKey = process.env.EXPO_PUBLIC_API_KEY_WEATHER_API;
 
 const api = axios.create({
     baseURL: 'https://api.weatherapi.com/v1'
