@@ -7,7 +7,7 @@ const api = axios.create({
 });
 
 export const openWeatherAPI = {
-    get5DaysForecast: (lat: number, lon: number) => {
+    get5DaysForecast: (lat: string, lon: string) => {
         return api.get(`forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt_br`);
     }
 };

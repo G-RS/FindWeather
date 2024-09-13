@@ -1,9 +1,9 @@
 import { StyleSheet, View, Image } from "react-native";
+import { Capitalize, WeekdayFormat } from "@/utils/dateFormat";
+import { getWeatherIcon } from "@/utils/weather-icons";
+import { List } from "@/utils/open-weather-api.interface";
 import Text from "../Text";
 import theme from "@/theme";
-import { weatherIcons } from "@/utils/weather-icons";
-import { List, OpenWeatherAPI } from "@/utils/open-weather-api.interface";
-import { WeekdayFormat } from "@/utils/dateFormat";
 
 
 interface DailyWeatherProps {
@@ -12,9 +12,8 @@ interface DailyWeatherProps {
 
 export default function DailyWeather(props: DailyWeatherProps) {
     const dayOfTheWeek = WeekdayFormat(props.forecast.dt_txt.toString());
-    // const monthDate = "Jan, 02"
-    const icon = weatherIcons[props.forecast.weather[0].icon as keyof typeof weatherIcons]
-    const condition = props.forecast.weather[0].description.replace(/\b([a-zÁ-ú]{3,})/g, (l) => l.charAt(0).toUpperCase() + l.slice(1));
+    const icon = getWeatherIcon(props.forecast.weather[0]);
+    const condition = Capitalize(props.forecast.weather[0].description);
     const tempMax = props.forecast.main.temp_max.toFixed(0);
     const tempMin = props.forecast.main.temp_min.toFixed(0);
 
@@ -26,7 +25,6 @@ export default function DailyWeather(props: DailyWeatherProps) {
                 <Text fontSize={theme.fontSize.xs16} 
                       color={theme.colors.white}>{dayOfTheWeek}
                 </Text>
-                {/* <Text fontSize={theme.fontSize.xs16}> {monthDate}</Text> */}
             </View>
 
             <View style={styles.conditionContainer}>
@@ -52,26 +50,26 @@ const styles = StyleSheet.create({
         marginLeft: 32,
         marginRight: 32,
         marginTop: 10,
-        marginBottom: 10,
+        marginBottom: 10
     },
     dateContainer: {
         flexDirection: 'row',
-        width: 70,
+        width: 70
     },
     conditionContainer: {
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     icon: {
         height: 30,
         width: 30
     },
     text: {
-        margin: 5,
+        margin: 5
     },
     temperatureContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        width: 80,
+        width: 80
     },
 });

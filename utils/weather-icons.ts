@@ -1,5 +1,31 @@
+import { Weather } from "./open-weather-api.interface";
+import { Current, Hour } from "./weather-api.interface";
+
+export function getWeatherIcon(forecast: Current | Hour | Weather)  {
+  let key: keyof typeof weatherIcons;
+
+  if ('icon' in forecast) {
+    key = forecast.icon as keyof typeof weatherIcons;
+
+    return weatherIcons[key]
+  } 
+
+  if ('is_day' in forecast) {
+    key = forecast.condition.code as keyof typeof weatherIcons;
+
+    if (forecast.condition.code == 1000) {
+      key = `${forecast.condition.code}-${forecast.is_day}` as keyof typeof weatherIcons;
+      return weatherIcons[key];
+    }
+    
+    return weatherIcons[key]
+  }
+};
+
+
 export const weatherIcons = {
-  1000: require('@/assets/images/weather-icons/sun.png'),
+  "1000-0": require('@/assets/images/weather-icons/night.png'),
+  "1000-1": require('@/assets/images/weather-icons/sun.png'),
   1003: require('@/assets/images/weather-icons/cloud.png'),
   1006: require('@/assets/images/weather-icons/cloud.png'),
   1009: require('@/assets/images/weather-icons/cloud.png'),

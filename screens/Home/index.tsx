@@ -1,12 +1,12 @@
-import { View, Image, Platform, FlatList, ActivityIndicator } from "react-native";
-import { useEffect, useState } from "react";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { View, Image, FlatList, ActivityIndicator } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { Link, router, useFocusEffect } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { StorageKeys } from "@/utils/storage.interface";
-import { WeatherAPI } from "@/utils/weather-api.interface";
+import { Forecastday, WeatherAPI } from "@/utils/weather-api.interface";
 import { weatherAPI } from "@/services/weather-api";
-import { weatherIcons } from "@/utils/weather-icons";
-import { getData, getTestData } from "@/storage/async-storage";
+import { getWeatherIcon } from "@/utils/weather-icons";
+import { getData } from "@/storage/async-storage";
 import { DateFormat, TimeFormat } from "@/utils/dateFormat";
 import Text from "@/components/Text";
 import Temperature from "@/components/Temperature";
@@ -15,10 +15,6 @@ import HourCard from "@/components/Card-Hour";
 import theme from "@/theme";
 import styles from "./styles";
 
-
-interface HomeProps {
-    cityName: string;
-}
 
 const HomeEmptyContent = () => {
     return (
@@ -42,30 +38,49 @@ const HomeEmptyContent = () => {
     );
 } 
 
-const HomeContent = ( props: HomeProps ) => {
+const HomeContent = () => {
     const [forecast, setForecast] = useState({} as WeatherAPI);
+    const [nextDayForecast, setNextDayForecast] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const [address, setAddress] = useState("");
-    const params = useLocalSearchParams<{ address: string}>();
-
-    // useEffect(() => {
-    //     weatherAPI.getForecast(city as string)
-    //     .then( (response) => {
-    //         setForecast(response.data);
-    //         setIsLoading(false);
-    //     });
-    // }, []);
+    const [isFocus, setIsFocus] = useState(true);
+    const [city, setCity] = useState('');
 
     useEffect(() => {
-        getTestData(StorageKeys.Test)
-        .then((data) => {
-            setForecast(data);
-            setIsLoading(false);
-            setAddress(`${data.location.name}, ${data.location.country}`)
-            console.log(`W.A.: ${data.location.name as WeatherAPI}`)        
-            console.log(`Name: ${props.cityName}`)
-        });
-    }, []);
+        if(isFocus) {
+            getData(StorageKeys.CityName)
+                .then((cityName) => {
+                    if(cityName != city) {
+                        setIsLoading(true);
+
+                        weatherAPI.getForecast(cityName as string)
+                        .then( (response) => {
+                            setForecast(response.data);
+                            setIsLoading(false);
+
+                            const nextDay = response.data.forecast.forecastday[0] as Forecastday;
+
+                            setNextDayForecast({
+                                humidity: nextDay.hour[0].humidity,
+                                wind_kph: nextDay.hour[0].wind_kph,
+                                rain: nextDay.hour[0].chance_of_rain,
+                                lat: `${response.data.location.lat}`,
+                                lon: `${response.data.location.lon}`,
+                            });
+
+                            setCity(cityName as string);
+                        });
+                    }
+                });
+        }
+    }, [isFocus]);
+
+    useFocusEffect(
+        useCallback( () => {
+            setIsFocus(true);
+    
+            return () => { setIsFocus(false); }
+        }, [])
+    );
 
     return (
         <View style={styles.container}>
@@ -81,10 +96,10 @@ const HomeContent = ( props: HomeProps ) => {
                     <Text fontSize={theme.fontSize.xs16}>{ DateFormat(forecast.location.localtime) }</Text>
 
                     <Image style={styles.icon} 
-                           source={ weatherIcons[`${forecast.current.condition.code as keyof typeof weatherIcons}`] } 
+                           source={getWeatherIcon(forecast.current)}
                     />
 
-                    <Temperature value={`${forecast.current.temp_c.toFixed(0)}`} 
+                    <Temperature value={forecast.current.temp_c}
                                  fontSize1={theme.fontSize.giant76} 
                                  fontSize2={theme.fontSize.xxl33}
                     />
@@ -105,7 +120,7 @@ const HomeContent = ( props: HomeProps ) => {
                             <Text fontSize={theme.fontSize.xs16}
                                   font={theme.fontFamily.OverpassSemiBold}>
                                     <Link href={{ pathname: "/next-days", 
-                                                  params: { address: address }}} >Próximos 5 dias
+                                                  params: nextDayForecast }} >Próximos 5 dias
                                     </Link>
                             </Text>
                             <Ionicons name="chevron-forward-sharp" size={15} color={theme.colors.gray100}/>
@@ -116,9 +131,9 @@ const HomeContent = ( props: HomeProps ) => {
                         <FlatList horizontal={true}
                                     data={forecast.forecast.forecastday[0].hour}
                                     renderItem={ ({item}) => (
-                                        <HourCard temperature={item.temp_c.toFixed(0)} 
-                                                    image={item.condition.icon}
-                                                    hour={TimeFormat(item.time)} 
+                                        <HourCard temperature={item.temp_c} 
+                                                  image={getWeatherIcon(item)}
+                                                  hour={TimeFormat(item.time)} 
                                         />
                                     )} 
                         />
@@ -131,18 +146,25 @@ const HomeContent = ( props: HomeProps ) => {
 
 export default function Home() {
     const [city, setCity] = useState("");
+    const [isFocus, setIsFocus] = useState(true);
 
     useEffect(() => {
-        getData(StorageKeys.CityName)
-        .then((city) => {
-            setCity(city as string);
-            console.log(`City: ${city} - ${Platform.OS}`)
-        });
-    }, []);
+        if(isFocus) {
+            getData(StorageKeys.CityName)
+                .then((city) => { setCity(city as string); });
+        }     
+    }, [isFocus]);
+
+    useFocusEffect(
+        useCallback( () => {
+            setIsFocus(true);    
+            return () => { setIsFocus(false); }
+        }, [])
+    );
 
     return (
         <>
-            { city != "" ? <HomeContent cityName={city} /> : <HomeEmptyContent/> }
+            { city ? <HomeContent/> : <HomeEmptyContent/> }
         </>
     );
 }

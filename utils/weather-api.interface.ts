@@ -149,3 +149,13 @@ export interface Alert { }
 export interface WeatherAPIProps {
     forecast: WeatherAPI
 }
+
+export interface NextDayForecast {
+    temp_max: number;
+    temp_min: number;
+    condition: string;
+    humidity: number;
+    wind_kph: number;
+    rain: number;
+    address: string;
+}

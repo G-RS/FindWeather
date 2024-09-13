@@ -1,8 +1,6 @@
 export enum StorageKeys {
     FirstAccess = "FindWeather:Welcome",
-    CityName = "FindWeather:City",
-    Test = "FindWeather:Test",
-    Test5Days = "FindWeather:Test5Days"
+    CityName = "FindWeather:City"
 }
 
 export interface StorageType {

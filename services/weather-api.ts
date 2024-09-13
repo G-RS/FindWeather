@@ -8,6 +8,6 @@ const api = axios.create({
 
 export const weatherAPI = {
     getForecast: (city: string) => {
-        return api.get(`forecast.json?key=${apiKey}&q=${city}&days=1&aqi=no&alerts=no&lang=pt`)
+        return api.get(`forecast.json?key=${apiKey}&q=${city}&days=2&aqi=no&alerts=no&lang=pt`)
     }
 }

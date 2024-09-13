@@ -1,14 +1,14 @@
+import { useFonts, Overpass_600SemiBold, Overpass_700Bold, Overpass_400Regular, Overpass_300Light } from '@expo-google-fonts/overpass';
 import { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
+import { StatusBar } from "expo-status-bar";
 import { Redirect, useNavigation } from 'expo-router';
-import { useFonts, Overpass_400Regular, Overpass_600SemiBold, Overpass_700Bold } from '@expo-google-fonts/overpass';
 import { StorageKeys } from '@/utils/storage.interface';
 import { getData } from '@/storage/async-storage';
-import { StatusBar } from "expo-status-bar";
 import * as SystemUI from 'expo-system-ui';
 import Welcome from '@/screens/Welcome';
 import theme from "@/theme";
-import { title } from 'process';
-import { Platform } from 'react-native';
+
 
 
 export default function Index() {
@@ -24,13 +24,14 @@ export default function Index() {
     }
     
     getData(StorageKeys.FirstAccess)
-      .then( (data) => {setFirstAccess(data as string); console.log(data)} );
+      .then( (data) => { setFirstAccess(data as string); } );
   }, [navigation]);
 
   let [fontsLoaded] = useFonts({
-    Overpass_400Regular,
-    Overpass_600SemiBold,
-    Overpass_700Bold
+        Overpass_300Light,
+        Overpass_400Regular,
+        Overpass_600SemiBold,
+        Overpass_700Bold
   });
 
   if (!fontsLoaded) { return }

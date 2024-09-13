@@ -1,14 +1,14 @@
 import { View, Image, ActivityIndicator } from "react-native";
 import { useState } from "react";
 import { weatherAPI } from "@/services/weather-api";
+import { WeatherAPI } from "@/utils/weather-api.interface";
+import { StorageKeys } from "@/utils/storage.interface";
+import { storeData } from "@/storage/async-storage";
 import SearchBar from "@/components/SearchBar";
 import SearchCard from "@/components/Card-Search";
 import Text from "@/components/Text";
 import theme from "@/theme";
 import styles from "./styles";
-import { WeatherAPI } from "@/utils/weather-api.interface";
-import { storeData, storeTestData } from "@/storage/async-storage";
-import { StorageKeys } from "@/utils/storage.interface";
 
 
 const SearchError = () => {
@@ -39,13 +39,11 @@ export default function Search() {
     const handleAPICall = async () => {
         setIsError(false);
         setIsLoading(true);
-        console.log(forecast)
 
         weatherAPI.getForecast(textValue)
             .then((response) => { 
                 setForecast(response.data);
                 storeData(StorageKeys.CityName, textValue);
-                // storeTestData(response.data);
             })
             .catch((error) => { 
                 setIsError(true);

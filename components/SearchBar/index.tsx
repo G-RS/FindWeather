@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         paddingLeft: 12,
         color: theme.colors.white,
         fontFamily: theme.fontFamily.OverpassRegular,
-        fontSize: theme.fontSize.xs16,
+        fontSize: theme.fontSize.xs16
     },
     button: {
         justifyContent: 'center',

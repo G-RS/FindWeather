@@ -1,12 +1,11 @@
-import {View, Image} from "react-native";
+import { View, Image} from "react-native";
+import { router } from "expo-router";
+import { storeData } from "@/storage/async-storage";
+import { StorageKeys } from "@/utils/storage.interface";
 import Text from "@/components/Text";
 import Button from "@/components/Button";
 import theme from "@/theme";
 import styles from "./styles";
-import { router } from "expo-router";
-import { storeData } from "@/storage/async-storage";
-import { StorageKeys } from "@/utils/storage.interface";
-
 
 export default function Welcome() {
 

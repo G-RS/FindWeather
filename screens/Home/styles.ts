@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import theme from "@/theme";
 
 export default StyleSheet.create({
@@ -20,7 +20,8 @@ export default StyleSheet.create({
         marginTop: 105
     },
     icon: {
-        height: 140,
+        objectFit: 'contain',
+        height: Platform.OS == 'web' ? 180 : 140,
         width: 172,
         marginTop: 40
     },
