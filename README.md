@@ -1,50 +1,38 @@
-# Welcome to your Expo app 👋
+# FindWeather 🌦 
+Projeto de um aplicativo de previsão do tempo, utilizando as APIs [**WeatherAPI**](https://www.weatherapi.com/) e [**OpenWeatherMap**](https://openweathermap.org/), desenvolvido com base no desafio do [**7 Days of Code**](https://7daysofcode.io/matricula/react-native-expo). 
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<br>
 
-## Get started
+## 📱 Funcionalidades
 
-1. Install dependencies
+* Buscar uma cidade ou país para visualizar o clima atual
+* Visualizar o clima dos próximos 5 dias
+  
+![Welcome](https://github.com/user-attachments/assets/90f57e2c-1d70-4c70-9207-7bb6833d3cc8)
+![Home_Empty](https://github.com/user-attachments/assets/90e04d4b-7ed3-4d57-a8ee-71861b188dca)
+![Home](https://github.com/user-attachments/assets/f1837d64-f5d2-4f85-aed2-e21948948a15)
+![5_Dias](https://github.com/user-attachments/assets/e3bedf19-1948-4ffd-b375-e8c53b4ed119)
+![Busca](https://github.com/user-attachments/assets/497da905-24de-4dd8-a242-eedfa54dfd83)
+![Busca_Erro](https://github.com/user-attachments/assets/81661715-4573-4d8d-b9f9-2f5798780516)   
+![FindWeather_iOS](https://github.com/user-attachments/assets/78d0aa73-9d16-40c9-b210-60139ee26d21)
 
-   ```bash
-   npm install
+
+## 💻 Técnicas & Tecnologias
+
+* Linguagem: `TypeScript` 
+* Frameworks: `React Native`, `Expo`
+* Bibliotecas: `Axios`, `Async Storage`, `styled-components`
+* APIs: `WeatherAPI`, `OpenWeatherMap`
+
+<br>
+
+## :gear: Configuração do Projeto
+
+* Para executar o aplicativo são necessárias as chaves das APIs do [**WeatherAPI**](https://www.weatherapi.com/docs/#intro-getting-started) e do [**OpenWeatherMap**](https://openweathermap.org/), que podem ser obtidas após a criação da conta
+* Após obter as chaves crie um arquivo com o nome `.env.local` no diretório raiz, copie e cole o código abaixo e substitua os valores `SUA_API_KEY` pelas respectivas chaves
+  
+   ```.env
+   EXPO_PUBLIC_API_KEY_WEATHER_API=SUA_API_KEY
+   EXPO_PUBLIC_API_KEY_OPEN_WEATHER=SUA_API_KEY
    ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+   
